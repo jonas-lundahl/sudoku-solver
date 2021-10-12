@@ -1,23 +1,24 @@
 from copy import deepcopy
 import unittest
 
-from sudoku_solver import solve
+from sudoku_solver import SudokuSolver
 
 
-class TestStringMethods(unittest.TestCase):
+class TestSudoku(unittest.TestCase):
+    sudoku_solver = SudokuSolver()
 
     def test_solve_empty_input(self):
         with self.assertRaises(ValueError):
-            solve([])
+            self.sudoku_solver.solve([])
 
     def test_solve_invalid_input_string(self):
         with self.assertRaises(TypeError):
-            solve("my board")
+            self.sudoku_solver.solve("my board")
 
     def test_solve_invalid_input_wrong_board_size(self):
         with self.assertRaises(ValueError):
             board = [[0] * 8 for _ in range(9)]  # 9x8 grid
-            solve(board)
+            self.sudoku_solver.solve(board)
 
     def test_solve_one_cell(self):
         board = [
@@ -31,7 +32,7 @@ class TestStringMethods(unittest.TestCase):
             [2, 4, 8, 9, 5, 7, 1, 3, 6],
             [7, 6, 3, 4, 1, 8, 2, 5, 9]
         ]
-        solution = solve(deepcopy(board))
+        solution = self.sudoku_solver.solve(deepcopy(board))
         self.assertIsNotNone(solution)
 
         board[1][1] = 8
@@ -54,7 +55,7 @@ class TestStringMethods(unittest.TestCase):
             [9, 7, 8, 5, 3, 1, 6, 4, 2]
         ]
 
-        solution = solve(board)
+        solution = self.sudoku_solver.solve(board)
         self.assertEqual(expected_solution, solution)
 
     def test_solve_normal_board(self):
@@ -82,7 +83,7 @@ class TestStringMethods(unittest.TestCase):
             [7, 3, 1, 8, 5, 2, 6, 4, 9]
         ]
 
-        solution = solve(board)
+        solution = self.sudoku_solver.solve(board)
         self.assertEqual(expected_solution, solution)
 
     def test_solve_impossible(self):
@@ -97,7 +98,7 @@ class TestStringMethods(unittest.TestCase):
             [6, 8, 4, 2, 0, 7, 5, 0, 0],
             [7, 9, 1, 0, 5, 0, 6, 0, 8]
         ]
-        solution = solve(board)
+        solution = self.sudoku_solver.solve(board)
         self.assertEqual("NO SOLUTION", solution)
 
 
