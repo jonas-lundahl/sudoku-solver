@@ -8,7 +8,7 @@ LFLAGS	= -lgtest -lpthread
 all: $(OBJS)
 	$(CC) -g $(OBJS) -o $(OUT) $(LFLAGS)
 
-sudoku_solver.o: sudoku_solver.cpp
+sudoku_solver.o: sudoku_solver.cpp sudoku_solver.h
 	$(CC) $(FLAGS) sudoku_solver.cpp
 
 test_sudoku_solver.o: test_sudoku_solver.cpp
