@@ -67,8 +67,8 @@ class SudokuSolver:
             self.__remove_candidate(board[r][col], candidates)
 
         # Find top left corner of box
-        row_offset = self.__find_offset(row)  # 0, 3, or 6
-        col_offset = self.__find_offset(col)  # 0, 3, or 6
+        row_offset = row // 3 * 3  # 0, 3, or 6
+        col_offset = col // 3 * 3  # 0, 3, or 6
 
         # Check box
         for r in range(3):
@@ -88,13 +88,9 @@ class SudokuSolver:
             if solution != self.NO_SOLUTION:
                 return solution
 
-            # Candidate made board unsolvable, roll back cells ahead of us
-            ri, ci = row, col
-            while (ri, ci) != (9, 0):
-                if status[ri][ci] == 1:
-                    status[ri][ci] = 0
-                    board[ri][ci] = 0
-                ri, ci = self.__next_position(ri, ci)
+            # Candidate made board unsolvable, roll back cell
+            status[row][col] = 0
+            board[row][col] = 0
 
         # If no candidates exist or none solved the board
         return self.NO_SOLUTION
@@ -109,22 +105,11 @@ class SudokuSolver:
         except KeyError:
             pass
 
-    def __find_offset(self, sequence_number):
-        """
-        Auxiliary method to find the top left corner of the current box.
-        """
-
-        if sequence_number in [0, 1, 2]:
-            return 0
-        if sequence_number in [3, 4, 5]:
-            return 3
-        if sequence_number in [6, 7, 8]:
-            return 6
-
     def __next_position(self, row, col):
         """
         Auxiliary method to increment the current position on the board.
         """
+
         col += 1
         if col >= self.COLS:
             col = 0
