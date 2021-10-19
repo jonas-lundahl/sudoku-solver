@@ -1,13 +1,9 @@
 #include "sudoku_solver.h"
 
-#include "bits/stdc++.h"
-
-using namespace std;
-
 // Auxiliary print function for debugging
-ostream& operator<<(ostream& os, const board_t& board) {
-    for (size_t row = 0; row < 9; row++) {
-        for (size_t col = 0; col < 9; col++) {
+std::ostream& operator<<(std::ostream& os, const board_t& board) {
+    for (size_t row = 0; row < N; row++) {
+        for (size_t col = 0; col < N; col++) {
             os << board[row][col] << " ";
         }
         os << "\n";
@@ -21,8 +17,8 @@ board_t& SudokuSolver::getBoard() { return board; }
 
 bool SudokuSolver::solveBoard() {
     fixed = {};
-    for (size_t row = 0; row < 9; row++) {
-        for (size_t col = 0; col < 9; col++) {
+    for (size_t row = 0; row < N; row++) {
+        for (size_t col = 0; col < N; col++) {
             fixed[row][col] = board[row][col] > 0 ? 2 : 0;
         }
     }
@@ -31,7 +27,7 @@ bool SudokuSolver::solveBoard() {
 }
 
 bool SudokuSolver::solve(int row, int col) {
-    if (row == 9) return true;  // end of board reached
+    if (row == N) return true;  // end of board reached
 
     int next_row, next_col;
     if (col == 8) {
@@ -46,33 +42,33 @@ bool SudokuSolver::solve(int row, int col) {
         return solve(next_row, next_col);  // already occupied
 
     // Test all possibilities
-    for (int candidate = 1; candidate <= 9; candidate++) {
+    for (int candidate = 1; candidate <= N; candidate++) {
         int d;
 
         // Check rows
-        for (d = 0; d < 9; ++d) {
+        for (d = 0; d < N; ++d) {
             if (board[d][col] == candidate) break;
         }
-        if (d < 9) continue;
+        if (d < N) continue;
 
         // Check cols
-        for (d = 0; d < 9; ++d) {
+        for (d = 0; d < N; ++d) {
             if (board[row][d] == candidate) break;
         }
-        if (d < 9) continue;
+        if (d < N) continue;
 
         // Check box
         int brow, bcol;  // top left corner of current box
-        brow = row / 3 * 3;
-        bcol = col / 3 * 3;
+        brow = row / N_BOX * N_BOX;
+        bcol = col / N_BOX * N_BOX;
         d = 0;
-        for (int r = 0; r < 3; r++) {
-            for (int c = 0; c < 3; c++) {
+        for (int r = 0; r < N_BOX; r++) {
+            for (int c = 0; c < N_BOX; c++) {
                 if (board[brow + r][bcol + c] == candidate) break;
                 d++;
             }
         }
-        if (d < 9) continue;
+        if (d < N) continue;
 
         // Candidate can be placed
         fixed[row][col] = 1;

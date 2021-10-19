@@ -3,7 +3,10 @@
 #include <array>
 #include <iostream>
 
-typedef std::array<std::array<int, 9>, 9> board_t;
+#define N (9)
+#define N_BOX (3)
+
+typedef std::array<std::array<int, N>, N> board_t;
 
 class SudokuSolver {
    private:
