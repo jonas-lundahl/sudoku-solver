@@ -2,8 +2,8 @@
 
 // Auxiliary print function for debugging
 std::ostream& operator<<(std::ostream& os, const board_t& board) {
-    for (size_t row = 0; row < N; row++) {
-        for (size_t col = 0; col < N; col++) {
+    for (uc row = 0; row < N; row++) {
+        for (uc col = 0; col < N; col++) {
             os << board[row][col] << " ";
         }
         os << "\n";
@@ -17,8 +17,8 @@ board_t& SudokuSolver::getBoard() { return board; }
 
 bool SudokuSolver::solveBoard() {
     fixed = {};
-    for (size_t row = 0; row < N; row++) {
-        for (size_t col = 0; col < N; col++) {
+    for (uc row = 0; row < N; row++) {
+        for (uc col = 0; col < N; col++) {
             fixed[row][col] = board[row][col] > 0 ? 2 : 0;
         }
     }
@@ -26,10 +26,10 @@ bool SudokuSolver::solveBoard() {
     return solve(0, 0);
 }
 
-bool SudokuSolver::solve(int row, int col) {
+bool SudokuSolver::solve(uc row, uc col) {
     if (row == N) return true;  // end of board reached
 
-    int next_row, next_col;
+    uc next_row, next_col;
     if (col == 8) {
         next_row = row + 1;
         next_col = 0;
@@ -42,8 +42,8 @@ bool SudokuSolver::solve(int row, int col) {
         return solve(next_row, next_col);  // already occupied
 
     // Test all possibilities
-    for (int candidate = 1; candidate <= N; candidate++) {
-        int d;
+    for (uc candidate = 1; candidate <= N; candidate++) {
+        uc d;
 
         // Check rows
         for (d = 0; d < N; ++d) {
@@ -58,12 +58,12 @@ bool SudokuSolver::solve(int row, int col) {
         if (d < N) continue;
 
         // Check box
-        int brow, bcol;  // top left corner of current box
+        uc brow, bcol;  // top left corner of current box
         brow = row / N_BOX * N_BOX;
         bcol = col / N_BOX * N_BOX;
         d = 0;
-        for (int r = 0; r < N_BOX; r++) {
-            for (int c = 0; c < N_BOX; c++) {
+        for (uc r = 0; r < N_BOX; r++) {
+            for (uc c = 0; c < N_BOX; c++) {
                 if (board[brow + r][bcol + c] == candidate) break;
                 d++;
             }

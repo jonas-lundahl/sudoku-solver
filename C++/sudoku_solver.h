@@ -6,7 +6,8 @@
 #define N (9)
 #define N_BOX (3)
 
-typedef std::array<std::array<int, N>, N> board_t;
+typedef unsigned char uc;
+typedef std::array<std::array<uc, N>, N> board_t;
 
 class SudokuSolver {
    private:
@@ -25,7 +26,7 @@ class SudokuSolver {
      * Solves the Sudoku board starting from (row, col).
      * @return true if solution was found, otherwise false
      */
-    bool solve(int, int);
+    bool solve(uc, uc);
 
    public:
     /**
